@@ -42,6 +42,17 @@ class EventController extends Controller
      */
     public function store(StoreEventRequest $request)
     {
+        $check = DB::table('events')
+            ->whereDate('start_date', $request['event_date'])
+            ->whereTime('end_date', '>' ,$request['start_time'])
+            ->whereTime('start_date', '<' ,$request['end_time'])
+            ->exists();
+
+        if($check) {
+            session()->flash('status', 'この時間帯は既に他の予約が存在します');
+            return view('manager.events.create');
+        }
+
         $start = $request['event_date'] . " " .  $request['start_time'];
         $startDate = Carbon::createFromFormat('Y-m-d H:i', $start);
 
