@@ -18,7 +18,10 @@ class EventController extends Controller
      */
     public function index()
     {
+        $today = Carbon::today();
+
         $events = DB::table('events')
+            ->whereDate('start_date', '>=', $today)
             ->orderBy('start_date', 'asc')
             ->paginate(10);
         
