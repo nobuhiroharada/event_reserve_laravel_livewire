@@ -79,7 +79,7 @@ class EventController extends Controller
     public function show(Event $event)
     {
         $event = Event::findOrFail($event->id);
-        $eventDate = $event->eventDate;
+        $eventDate = $event->editEventDate;
         $startTime = $event->startTime;
         $endTime = $event->endTime;
 
@@ -111,7 +111,32 @@ class EventController extends Controller
      */
     public function update(UpdateEventRequest $request, Event $event)
     {
-        //
+        $eventCount = EventService::countEventDuplication(
+            $request['event_date'],
+            $request['start_time'],
+            $request['end_time']
+        );
+
+        if ($eventCount > 1) {
+            $event = Event::findOrFail($event->id); 
+            session()->flash('status', 'この時間帯は既に他の予約が存在します');
+            return view('manager.events.edit', compact('event'));
+        }
+
+        $startDate = EventService::joinDateAndTime($request['event_date'], $request['start_time']);
+        $endDate = EventService::joinDateAndTime($request['event_date'], $request['end_time']);
+
+        $event = Event::findOrFail($event->id);
+        $event->name = $request['event_name'];
+        $event->information = $request['information'];
+        $event->max_people = $request['max_people'];
+        $event->start_date = $startDate;
+        $event->end_date = $endDate;
+        $event->is_visible = $request['is_visible'];
+        $event->save();
+
+        session()->flash('status', '更新しました');
+        return to_route('events.index');
     }
 
     /**

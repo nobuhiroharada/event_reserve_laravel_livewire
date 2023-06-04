@@ -34,7 +34,7 @@
                         <div class="md:flex justify-between">
                             <div class="mt-4">
                                 <x-label for="event_date" value="イベント日付" />
-                                <x-input id="event_date" class="block mt-1 w-full" type="text" name="event_date" value="{{ $event->eventDate }}" required />
+                                <x-input id="event_date" class="block mt-1 w-full" type="text" name="event_date" value="{{ $event->editEventDate }}" required />
                             </div>
 
                             <div class="mt-4">
