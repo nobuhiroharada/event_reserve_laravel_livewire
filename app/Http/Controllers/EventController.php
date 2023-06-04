@@ -149,4 +149,15 @@ class EventController extends Controller
     {
         //
     }
+
+    public function past()
+    {
+        $today = Carbon::today();
+        $events = DB::table('events')
+            ->whereDate('start_date', '<', $today)
+            ->orderBy('start_date', 'desc')
+            ->paginate(10);
+        
+        return view('manager.events.past', compact('events'));
+    }
 }
