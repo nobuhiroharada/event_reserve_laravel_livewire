@@ -20,12 +20,24 @@
                             'start_date',
                             $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j]
                         )))
-                            <div class="py-1 px-2 h-8 border border-gray-200 text-xs">
-                                {{ $events->firstWhere('start_date',
-                                    $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j])
-                                    ->name
-                                }}
+                            @php
+                                $eventInfo = $events->firstWhere('start_date', $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j]);
+                                // 開始時間から終了時間を引いて、30分で割ることで何コマのイベントか算出。
+                                $eventPeriod = \Carbon\Carbon::parse($eventInfo->start_date)->diffInMinutes($eventInfo->end_date) / 30;
+                            @endphp
+                            <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100">
+                                {{ $eventInfo->name }}
                             </div>
+                            <!-- イベントのコマ数が1コマより多い場合(1コマ目にはイベント名が入り、残りのコマは背景色のみ変更) -->
+                            @if ($eventPeriod > 1)
+                                @for ($k = 0; $k < $eventPeriod; $k++)
+                                <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100"></div>
+                                @endfor
+                                @php
+                                    // 増えたコマ分の時間帯を加える
+                                    $j += $eventPeriod;
+                                @endphp
+                            @endif
                         @else
                             <div class="py-1 px-2 h-8 border border-gray-200"></div>
                         @endif
@@ -36,7 +48,4 @@
             </div>
         @endfor
     </div>
-    @foreach ($events as $event)
-        {{ $event->start_date }}<br>
-    @endforeach
 </div>
