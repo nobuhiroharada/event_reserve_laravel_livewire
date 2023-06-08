@@ -22,7 +22,7 @@
                         )))
                             @php
                                 $eventInfo = $events->firstWhere('start_date', $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j]);
-                                // 開始時間から終了時間を引いて、30分で割ることで何コマのイベントか算出。
+                                // 開始時間から終了時間を引いて、30分(1コマ)で割ることで何コマのイベントか算出。
                                 $eventPeriod = \Carbon\Carbon::parse($eventInfo->start_date)->diffInMinutes($eventInfo->end_date) / 30;
                             @endphp
                             <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100">
