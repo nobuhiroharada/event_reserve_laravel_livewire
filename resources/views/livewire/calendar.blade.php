@@ -25,9 +25,11 @@
                                 // 開始時間から終了時間を引いて、30分(1コマ)で割ることで何コマのイベントか算出。
                                 $eventPeriod = \Carbon\Carbon::parse($eventInfo->start_date)->diffInMinutes($eventInfo->end_date) / 30;
                             @endphp
-                            <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100">
-                                {{ $eventInfo->name }}
-                            </div>
+                            <a href="{{ route('events.detail', ['id' => $eventInfo->id]) }}">
+                                <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100">
+                                    {{ $eventInfo->name }}
+                                </div>
+                            </a>
                             <!-- イベントのコマ数が1コマより多い場合(1コマ目にはイベント名が入り、残りのコマは背景色のみ変更) -->
                             @if ($eventPeriod > 1)
                                 @for ($k = 0; $k < $eventPeriod; $k++)
