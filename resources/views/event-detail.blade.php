@@ -50,6 +50,15 @@
                                 <x-label for="max_people" value="定員数" />
                                 {{ $event->max_people }}
                             </div>
+
+                            <div class="mt-4">
+                                <x-label for="reserved_people" value="予約人数" />
+                                <select name="reserved_people">
+                                    @for ($i = 1; $i <= $reservablePeople; $i++)
+                                        <option value="{{$i}}">{{$i}}</option>
+                                    @endfor
+                                </select>
+                            </div>
                             
                             <x-button class="ml-4">
                                 予約する
