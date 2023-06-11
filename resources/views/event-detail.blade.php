@@ -17,7 +17,8 @@
                         </div>
                     @endif
 
-                    <form method="GET" action="{{ route('events.edit', [ 'event' => $event->id ]) }}">
+                    <form method="POST" action="{{ route('events.reserve', [ 'id' => $event->id ]) }}">
+                        @csrf
                         <div>
                             <x-label for="event_name" value="イベント名" />
                             {{ $event->name }}
@@ -60,6 +61,8 @@
                                 </select>
                             </div>
                             
+                            <input type="hidden" name="id" value="{{ $event->id }}">
+
                             <x-button class="ml-4">
                                 予約する
                             </x-button>
