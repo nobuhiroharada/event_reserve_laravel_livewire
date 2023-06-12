@@ -18,6 +18,7 @@ class MyPageService
                 && $event->start_date >= Carbon::now()->format('Y-m-d 00:00:00'))
                 {
                     $eventInfo = [
+                        'id' => $event->id,
                         'name' => $event->name,
                         'start_date' => $event->start_date,
                         'end_date' => $event->end_date,
@@ -35,6 +36,7 @@ class MyPageService
                 && $event->start_date < Carbon::now()->format('Y-m-d 00:00:00'))
                 {
                     $eventInfo = [
+                        'id' => $event->id,
                         'name' => $event->name,
                         'start_date' => $event->start_date,
                         'end_date' => $event->end_date,
