@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Event;
+use App\Models\Reservation;
 use App\Services\MyPageService;
 
 class MyPageController extends Controller
@@ -17,5 +19,15 @@ class MyPageController extends Controller
         $pastEvents = MyPageService::reservedEvent($events, 'past');
 
         return view('mypage/index', compact('fromTodayEvents', 'pastEvents'));
+    }
+
+    public function show($id)
+    {
+        $event = Event::findOrFail($id);
+        $reservation = Reservation::where('user_id', '=', Auth::id())
+            ->where('event_id', '=', $id)
+            ->first();
+
+        return view('mypage/show', compact('event', 'reservation'));
     }
 }
