@@ -51,7 +51,7 @@
                                     {{ $reservation->number_of_people }}
                                 </div>
 
-                                @if ($event->EventDate < \Carbon\Carbon::today()->format('Y年m月d日'))
+                                @if ($event->EventDate >= \Carbon\Carbon::today()->format('Y年m月d日'))
                                     <a href="#" data-id="{{ $event->id }}" onclick="cancelPost(this)" class="ml-4 bg-gray-900 text-white py-2 px-4">
                                         キャンセルする
                                     </a>
