@@ -17,7 +17,6 @@
                         </div>
                     @endif
 
-                    <!-- <form method="GET" action="{{ route('events.edit', [ 'event' => $event->id ]) }}"> -->
                         <div>
                             <x-label for="event_name" value="イベント名" />
                             {{ $event->name }}
@@ -44,23 +43,33 @@
                                 {{ $event->endTime }}
                             </div>
                         </div>
+                        <form id="cancel_{{ $event->id }}" method="post" action="{{ route('mypage.cancel', [ 'id' => $event->id ]) }}">
+                            @csrf
+                            <div class="md:flex justify-between items-end">
+                                <div class="mt-4">
+                                    <x-label value="予約人数" />
+                                    {{ $reservation->number_of_people }}
+                                </div>
 
-                        <div class="md:flex justify-between items-end">
-                            <div class="mt-4">
-                                <x-label value="予約人数" />
-                                {{ $reservation->number_of_people }}
+                                @if ($event->EventDate < \Carbon\Carbon::today()->format('Y年m月d日'))
+                                    <a href="#" data-id="{{ $event->id }}" onclick="cancelPost(this)" class="ml-4 bg-gray-900 text-white py-2 px-4">
+                                        キャンセルする
+                                    </a>
+                                @endif
+                                
                             </div>
-
-                            @if ($event->eventDate < \Carbon\Carbon::today()->format('Y年m月d日'))
-                                <x-button class="ml-4">
-                                    キャンセルする
-                                </x-button>
-                            @endif
-                            
-                        </div>
-                    <!-- </form> -->
+                        </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function cancelPost(e)
+        {
+            'use strict';
+            if(confirm('本当にキャンセルしてよろしいですか？')) {
+                document.getElementById('cancel_' + e.dataset.id).submit();
+            }
+        }
+    </script>
 </x-app-layout>
